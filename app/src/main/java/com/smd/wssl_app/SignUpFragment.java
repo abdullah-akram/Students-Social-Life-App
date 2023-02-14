@@ -280,7 +280,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
                 .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(getContext(), "Couldn't register "+e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Couldn't register  "+e.getMessage(), Toast.LENGTH_LONG).show();
 
 
             }
