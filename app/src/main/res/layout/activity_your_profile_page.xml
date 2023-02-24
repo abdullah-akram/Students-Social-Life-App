@@ -265,13 +265,22 @@ much as connection as possible."
 
 
         </androidx.cardview.widget.CardView>
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:text="Update Profile"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:id="@+id/update"
+                />
+
         <Button
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:text="Update Profile"
+            android:text=" Login Facebook"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:id="@+id/update"
+            android:id="@+id/fb"
             />
         
        <TextView
