@@ -239,7 +239,10 @@ FirebaseAuth mauth;FirebaseFirestore db;
             @Override
             public void onComplete(Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(getContext(), "Successfully registered", Toast.LENGTH_LONG).show();
+                    if(email.contains("@uowmail.edu.au"))
+                    Toast.makeText(getContext(), "Successfully registered as Student", Toast.LENGTH_LONG).show();
+                    else if(email.contains("@uow.edu.au"))
+                        Toast.makeText(getContext(), "Successfully registered as Professor", Toast.LENGTH_LONG).show();
                     db = FirebaseFirestore.getInstance();
 
                     // Get the user ID
