@@ -13,7 +13,7 @@ android:background="@drawable/round_corner"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:gravity="center"
-        android:text="An OTP has been sent to your mail
+        android:text="An Email has been sent to your mail
         (to confirm if you are a current UOWD student/professor)"
         android:textSize="20sp" />
 

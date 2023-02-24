@@ -85,6 +85,10 @@ mauth = FirebaseAuth.getInstance();
                        startActivity(i);
                    }
                    else {
+                       if(email.contains("@uowmail.edu.au"))
+                           Toast.makeText(getContext(), "Signing in as Student", Toast.LENGTH_LONG).show();
+                       else if(email.contains("@uow.edu.au"))
+                           Toast.makeText(getContext(), "Signing in as Professor", Toast.LENGTH_LONG).show();
 
                        Intent i = new Intent(getContext(), HomeScreen.class);
                        startActivity(i);

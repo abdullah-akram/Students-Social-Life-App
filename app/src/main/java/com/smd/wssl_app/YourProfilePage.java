@@ -195,6 +195,43 @@ aboutme  = findViewById(R.id.aboutme);
                         String username = "chughta_i";
                         String password = "IndiuM456";
 
+//  Create a new Instagram client with the user's credentials
+                ArrayList<String> liked = new ArrayList<String>();
+                int i=0;
+                IGClient client = null;
+
+                try {
+                    client = IGClient.builder()
+                            .username(username)
+                            .password(password)
+                            .login();
+                } catch (IGLoginException e) {
+                    Log.d("logged","logger");
+                    e.printStackTrace();
+                }
+                Log.d("logged",client.toString());
+                for (FeedTimelineResponse response: client.getActions().timeline().feed()) {
+//                  liked.add(C"><":L"??")
+                    Log.d("sook",response.toString());
+//                   Log.d("sook",response.toString().substring(0,response.toString().indexOf("type1")));
+
+
+                    liked.add(response.toString());
+                    Log.d("ook2","num");
+                    i++;
+                    if(i==10)
+                        break;
+//                 for (String res :  (response.toString().split("' '"))){
+//                     Log.d("feedD",res);
+//                     if(res.startsWith("#"))
+//                         liked.add(res.substring(1));
+//
+//                 }
+
+                }
+//                Log.d("resullt","fsdf");
+                Log.d("resulter",liked.toString());
+
 //
 //Log.d("errors","working");
 //                Instagram4j instagram = Instagram4j.builder().username(username).password(password).build();
@@ -248,42 +285,6 @@ aboutme  = findViewById(R.id.aboutme);
 
 
 
-//  Create a new Instagram client with the user's credentials
-                ArrayList<String> liked = new ArrayList<String>();
-int i=0;
-                IGClient client = null;
-
-                try {
-                    client = IGClient.builder()
-                            .username(username)
-                            .password(password)
-                            .login();
-                } catch (IGLoginException e) {
-                    Log.d("logged","logger");
-                    e.printStackTrace();
-                }
-                Log.d("logged",client.toString());
-               for (FeedTimelineResponse response: client.getActions().timeline().feed()) {
-//                  liked.add(C"><":L"??")
-                   Log.d("sook",response.toString());
-//                   Log.d("sook",response.toString().substring(0,response.toString().indexOf("type1")));
-
-
-                   liked.add(response.toString());
-                   Log.d("ook2","num");
-                   i++;
-                   if(i==10)
-                       break;
-//                 for (String res :  (response.toString().split("' '"))){
-//                     Log.d("feedD",res);
-//                     if(res.startsWith("#"))
-//                         liked.add(res.substring(1));
-//
-//                 }
-
-               }
-//                Log.d("resullt","fsdf");
-               Log.d("resulter",liked.toString());
 //                List<TimelineMedia> likedMedia = null;
 //                try {
 //                    likedMedia = client.actions().users().info(client.)
