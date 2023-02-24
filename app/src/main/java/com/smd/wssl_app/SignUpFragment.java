@@ -28,6 +28,7 @@ import okhttp3.MediaType;
 
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -74,8 +75,15 @@ FirebaseAuth mauth;FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
+
+        mauth = FirebaseAuth.getInstance();
+       if( mauth.getCurrentUser().isEmailVerified()){
+           Intent i = new Intent(getContext(),HomeScreen.class);
+           startActivity(i);
+       }
 
 
     }
@@ -98,7 +106,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
 //                Toast.makeText(getContext(), "email sent", Toast.LENGTH_SHORT).show();
                 if(!email_full.isEmpty() && !password_full.isEmpty() && email_full.contains("@") && password_full.length()>6){
                     sendOTPEmail("+923098991009",123456);
-                showCustomDialog("yes");
+                showCustomDialog();
 
                 }
                 else{
@@ -122,7 +130,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
     }
 
 
-    private void showCustomDialog(String message) {
+    private void showCustomDialog() {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getContext()).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.otp_1, null);
@@ -146,7 +154,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
             public void onClick(View view) {
                 dialogBuilder.dismiss();
 
-              showCustomDialog2();
+              showCustomDialog3();
             }
         });
 
@@ -181,15 +189,6 @@ FirebaseAuth mauth;FirebaseFirestore db;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                otp_full = otp_textbox_one.getText().toString() + otp_textbox_two.getText().toString()+otp_textbox_three.getText().toString()+otp_textbox_four.getText().toString();
-
-
-
-
-
-
-               //
-                // Toast.makeText(getContext(), "Login Successfull"+otp_full, Toast.LENGTH_SHORT).show();
 
                 dialogBuilder.dismiss();
                 showCustomDialog3();
@@ -245,36 +244,41 @@ FirebaseAuth mauth;FirebaseFirestore db;
                         Toast.makeText(getContext(), "Successfully registered as Professor", Toast.LENGTH_LONG).show();
                     db = FirebaseFirestore.getInstance();
 
-                    // Get the user ID
-                    FirebaseUser user = mauth.getCurrentUser();
-                    String uid = user.getUid();
+                    Verify(email_full);
 
-                    // Add the user ID as a document to Firestore
-                    Map<String, Object> userData = new HashMap<>();
-                    userData.put("uid", uid);
-                    userData.put("email", user.getEmail());
-                    userData.put("password", password_full);
-                    userData.put("name", "WSSL User");
-                    userData.put("aboutme", "");
-                    userData.put("imgurl", "");
+                    if(mauth.getCurrentUser().isEmailVerified()){
 
-                    db.collection("users").document(uid).set(userData)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(Task<Void> task) {
-                                    Log.d("fire", "DocumentSnapshot successfully written!");
-                                    Toast.makeText(getContext(), "added", Toast.LENGTH_LONG).show();
-                                    Intent i = new Intent(getContext(),GetStarted.class);
-                                    startActivity(i);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("fire", "Error writing document", e);
-                                }
-                            });
+                        // Get the user ID
+                        FirebaseUser user = mauth.getCurrentUser();
+                        String uid = user.getUid();
 
+                        // Add the user ID as a document to Firestore
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("uid", uid);
+                        userData.put("email", user.getEmail());
+                        userData.put("password", password_full);
+                        userData.put("name", "WSSL User");
+                        userData.put("aboutme", "");
+                        userData.put("imgurl", "");
+
+                        db.collection("users").document(uid).set(userData)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(Task<Void> task) {
+                                        Log.d("fire", "DocumentSnapshot successfully written!");
+//                                    Toast.makeText(getContext(), "added", Toast.LENGTH_LONG).show();
+                                        Intent i = new Intent(getContext(),HomeScreen.class);
+                                        startActivity(i);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("fire", "Error writing document", e);
+                                    }
+                                });
+
+                    }
 
                 }
             }
@@ -297,6 +301,25 @@ FirebaseAuth mauth;FirebaseFirestore db;
 
     }
 
+    private void Verify(String emaill){
+
+        mauth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Task<Void> task) {
+                Toast.makeText(getContext(), "Email Sent for verification", Toast.LENGTH_SHORT).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(getContext(), "Not SENT", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+    }
 
 
     private static final String MAILGUN_API_KEY = "75cd784d-efd9f9c4";
