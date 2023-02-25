@@ -4,10 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +21,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.instagram4j.instagram4j.IGClient;
+import com.github.instagram4j.instagram4j.exceptions.IGLoginException;
+import com.github.instagram4j.instagram4j.responses.feed.FeedTimelineResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -40,23 +47,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Nullable;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class YourProfilePage extends AppCompatActivity {
 FirebaseAuth mauth;
     ImageButton logout,back;
     ImageView profilepic;
-    Integer ii=0;
+    String jjk;
+    Integer ii=0;ArrayList<String> liked;
+    ArrayList<String> suggests;
     Integer bol=0;
 
     RecyclerView rv;
-    Button update;
+    EditText u,p;
+    Button update,ai;
     List<ImageViewModel> ls;
 
     ImageViewAdapter adapter;
@@ -75,15 +80,19 @@ TextView sgrv;
 
         mauth = FirebaseAuth.getInstance();
         Navbarfunctions();
+        suggestions();
         logout = findViewById(R.id.logout);
+        u = findViewById(R.id.usernamee);
+        p = findViewById(R.id.password);
         sgrv = findViewById(R.id.SGrv);
         back = findViewById(R.id.back);
         update = findViewById(R.id.update);
+        ai = findViewById(R.id.ai);
         rv= findViewById(R.id.rvclubs);
 
         ls=new ArrayList<>();
 
-
+jjk = "";
 
         adapter=new ImageViewAdapter(ls,YourProfilePage.this);
         rv.setAdapter(adapter);
@@ -97,6 +106,52 @@ getclubs();
 name = findViewById(R.id.name);
 aboutme  = findViewById(R.id.aboutme);
         getData();
+
+
+        ai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Wait while we fetch data", Toast.LENGTH_SHORT).show();
+                Handler handler = new Handler();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                         jjk = integrateAI();
+
+                        // post a message to the main thread's message queue when myFunction() is done
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                // execute your function on the main thread here
+                                if(!isFinishing())
+
+                                        if (jjk.equals("T"))
+                                            Toast.makeText(getApplicationContext(), "Enter Details", Toast.LENGTH_SHORT).show();
+
+                                   else if (jjk.equals("N"))
+                                        Toast.makeText(getApplicationContext(), "Logging Error", Toast.LENGTH_SHORT).show();
+
+else
+                                        showCustomDialog(jjk);
+
+                            }
+                        });
+                    }
+                }).start();
+
+
+
+
+
+//                String jjk =integrateAI();
+//                android.os.SystemClock.sleep(20000);
+//                showCustomDialog(jjk);
+
+            }
+        });
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -371,6 +426,72 @@ ArrayList<String> groupids = new ArrayList<>();
     }
 
 
+
+    private String integrateAI(){
+if(!u.getText().toString().isEmpty() && !p.getText().toString().isEmpty()){
+    String username = u.getText().toString();
+    String password = p.getText().toString();
+
+Log.d("uiuiui",username+"-11 11-"+password);
+
+//  Create a new Instagram client with the user's credentials
+                liked = new ArrayList<String>();
+                int i=0;
+                IGClient client = null;
+
+                try {
+                    client = IGClient.builder()
+                            .username(username)
+                            .password(password)
+                            .login();
+                } catch (IGLoginException e) {
+                    Log.d("logged","logger");
+                    e.printStackTrace();
+return "N";
+
+                }
+                Log.d("logged",client.toString());
+                for (FeedTimelineResponse response: client.getActions().timeline().feed()) {
+                    Log.d("sook",response.toString());
+//                   Log.d("sook",response.toString().substring(0,response.toString().indexOf("type1")));
+
+
+                    liked.add(response.toString());
+
+                    Log.d("ook2","num");
+                    i++;
+                    if(i==3)
+                        break;
+//                 for (String res :  (response.toString().split("' '"))){
+//                     Log.d("feedD",res);
+//                     if(res.startsWith("#"))
+//                         liked.add(res.substring(1));
+//
+//                 }
+
+                }
+                String jjk="";
+//                Log.d("resullt","fsdf");
+                Log.d("resulter",liked.toString());
+                for(int k=0;k<liked.size();k++)
+                    for(int j=0;j<suggests.size();j++){
+                        if(liked.get(k).contains(suggests.get(j)))
+                        {
+//                            Toast.makeText(getApplicationContext(), "Club Suggested:"+suggests.get(j)+" Club", Toast.LENGTH_SHORT).show();
+                        Log.d("cmonman","yes suggested"+j+liked.size());
+                        jjk = suggests.get(j);
+                        k=liked.size();
+                        break;
+                        }
+                    }
+
+
+return jjk;}
+else{
+    return "T";
+}
+    }
+
     private void getimages(){
 
 
@@ -398,4 +519,72 @@ ArrayList<String> groupids = new ArrayList<>();
     }
 
 
+    private void suggestions()
+    {
+        db = FirebaseFirestore.getInstance();
+        mauth = FirebaseAuth.getInstance();
+suggests = new ArrayList<>();
+        db.collection("clubs")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String[] splited = document.getString("club_name").split("\\s+");
+suggests.add(splited[0]);
+
+                            }
+                        } else {
+                            Log.d("fire", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
+    }
+
+    private void showCustomDialog(String c) {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(YourProfilePage.this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.club_suggestion, null);
+        dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+        Button button = dialogView.findViewById(R.id.ok);
+        TextView tv= dialogView.findViewById(R.id.textView);
+        if(c.isEmpty()){
+            tv.setText("Couldn't find any clubs for you :(");
+        }
+        if(!c.equals("") || !c.isEmpty() || !c.equals(" ") || !c.equals("N") || !c.equals("T") ) {
+            Log.d("uiuiui", "o"+c+"o");
+            tv.setText("You have been suggested a Club: " + c + " Club");
+        }else
+            tv.setText("Couldn't find any clubs for you :(");
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+                Intent i =new Intent(getApplicationContext(),ClubsPage.class);
+                startActivity(i);
+
+            }
+        });
+
+
+
+    }
+
+//    @Override
+//    public void run() {
+//        integrateAI();
+//    }
 }

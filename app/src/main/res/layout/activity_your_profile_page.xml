@@ -128,7 +128,7 @@ android:focusable="false"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
         android:layout_weight="0.5"
-        android:text="My Clubs"
+        android:text="All Clubs"
         android:gravity="center"
         android:textSize="20sp"
         android:fontFamily="sans-serif-medium"
@@ -273,10 +273,51 @@ much as connection as possible."
             android:gravity="center"
             android:id="@+id/update"
             />
-        
+
+             <Button
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="Get Club Suggestions"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:id="@+id/ai"
+            />
+
+        <EditText
+            android:id="@+id/usernamee"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.7"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+
+            android:background="@drawable/round_corner"
+            android:padding="10dp"
+            android:hint="Insta username"
+            android:visibility="visible"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.7"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+
+            android:background="@drawable/round_corner"
+            android:padding="10dp"
+            android:hint="password"
+            android:visibility="visible"/>
+
        <TextView
            android:layout_width="match_parent"
-           android:layout_height="200dp"
+           android:layout_height="300dp"
            />
 
     </LinearLayout>

@@ -80,9 +80,10 @@ FirebaseAuth mauth;FirebaseFirestore db;
 
 
         mauth = FirebaseAuth.getInstance();
-       if( mauth.getCurrentUser().isEmailVerified()){
+       if( mauth.getCurrentUser()!=null){
+           if(mauth.getCurrentUser().isEmailVerified()){
            Intent i = new Intent(getContext(),HomeScreen.class);
-           startActivity(i);
+           startActivity(i);}
        }
 
 
