@@ -46,6 +46,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -475,7 +476,7 @@ return "N";
                 Log.d("resulter",liked.toString());
                 for(int k=0;k<liked.size();k++)
                     for(int j=0;j<suggests.size();j++){
-                        if(liked.get(k).contains(suggests.get(j)))
+                        if(liked.get(k).toLowerCase().contains(suggests.get(j)))
                         {
 //                            Toast.makeText(getApplicationContext(), "Club Suggested:"+suggests.get(j)+" Club", Toast.LENGTH_SHORT).show();
                         Log.d("cmonman","yes suggested"+j+liked.size());
@@ -532,7 +533,7 @@ suggests = new ArrayList<>();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String[] splited = document.getString("club_name").split("\\s+");
-suggests.add(splited[0]);
+suggests.add(splited[0].toLowerCase());
 
                             }
                         } else {
