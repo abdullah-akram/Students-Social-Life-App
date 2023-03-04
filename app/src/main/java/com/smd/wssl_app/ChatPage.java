@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -104,8 +105,8 @@ uid = mauth.getUid();
         rv.setAdapter(adapter);
         RecyclerView.LayoutManager lm=new LinearLayoutManager(ChatPage.this);
         rv.setLayoutManager(lm);
-        ls.add(new ChatModel("dh53omFeQGT80I1HHD7zPI1XeuV2","hello gee","https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb"));
-        ls.add(new ChatModel("dh53omFeQGT80I1HHD7zPIfXeuV2","okok",""));
+//        ls.add(new ChatModel("dh53omFeQGT80I1HHD7zPI1XeuV2","hello gee","https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb"));
+//        ls.add(new ChatModel("dh53omFeQGT80I1HHD7zPIfXeuV2","okok",""));
         updatelist();
         CollectionReference parentRef = db.collection("groups");
 
@@ -360,5 +361,52 @@ return img_url;
 
 
     }
+
+    private void status(String status){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+// Get the document for the current user
+        DocumentReference userRef = db.collection("users").document(currentUser.getUid());
+
+// Create a map to hold the new fields
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("status", status);
+
+
+// Add the new fields to the document
+        userRef.update(newData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "status:"+status, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // The fields could not be added to the document
+                        Toast.makeText(getApplicationContext(),"aaaa"+ e, Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        //   status("offline");
+        super.onDestroy();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // status("online");
+
+    }
+
 
 }

@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,11 +43,13 @@ public class ChatMembers extends AppCompatActivity {
     FirebaseAuth mauth;
     ChatMembersAdapter adapter;
     FirebaseFirestore db;
+    TextView num;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_members);
         back = findViewById(R.id.back);
+        num = findViewById(R.id.num);
         mauth = FirebaseAuth.getInstance();
         uid = mauth.getUid();
         db = FirebaseFirestore.getInstance();
@@ -56,16 +60,23 @@ public class ChatMembers extends AppCompatActivity {
 
 
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         adapter=new ChatMembersAdapter(ls,ChatMembers.this);
         rv.setAdapter(adapter);
         RecyclerView.LayoutManager lm=new LinearLayoutManager(ChatMembers.this);
         rv.setLayoutManager(lm);
-        ls.add(new ChatMemberModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb","WSSL USER",
-                "student","online"));
-        ls.add(new ChatMemberModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb","WSSL user",
-                "student","offline"));
-        ls.add(new ChatMemberModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb","WSSL user",
-                "student","online"));
+//        ls.add(new ChatMemberModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb","WSSL USER",
+//                "student","online"));
+//        ls.add(new ChatMemberModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb","WSSL user",
+//                "student","offline"));
+//        ls.add(new ChatMemberModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/Capture.PNG?alt=media&token=02143959-4f2a-4810-ab94-d9b223e056cb","WSSL user",
+//                "student","online"));
         showMembers();
 
         adapter.notifyDataSetChanged();
@@ -98,7 +109,7 @@ public class ChatMembers extends AppCompatActivity {
 //                            getstatus(documentSnapshot.getString("uid"));
 
                             adapter.notifyDataSetChanged();
-
+num.setText(Integer.toString(adapter.getItemCount())+" Members");
                         }
                     }
                 })

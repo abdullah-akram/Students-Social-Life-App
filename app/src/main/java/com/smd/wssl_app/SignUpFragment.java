@@ -247,7 +247,6 @@ FirebaseAuth mauth;FirebaseFirestore db;
 
                     Verify(email_full);
 
-                    if(mauth.getCurrentUser().isEmailVerified()){
 
                         // Get the user ID
                         FirebaseUser user = mauth.getCurrentUser();
@@ -267,9 +266,9 @@ FirebaseAuth mauth;FirebaseFirestore db;
                                     @Override
                                     public void onComplete(Task<Void> task) {
                                         Log.d("fire", "DocumentSnapshot successfully written!");
-//                                    Toast.makeText(getContext(), "added", Toast.LENGTH_LONG).show();
-                                        Intent i = new Intent(getContext(),HomeScreen.class);
-                                        startActivity(i);
+                                    Toast.makeText(getContext(), "You can now Sign In after Verification", Toast.LENGTH_LONG).show();
+//                                        Intent i = new Intent(getContext(),HomeScreen.class);
+//                                        startActivity(i);
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -279,7 +278,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
                                     }
                                 });
 
-                    }
+
 
                 }
             }

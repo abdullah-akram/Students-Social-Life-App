@@ -139,52 +139,10 @@ FirebaseFirestore db;
     }
 
 
-    private void status(String status){
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
-// Get the document for the current user
-        DocumentReference userRef = db.collection("users").document(currentUser.getUid());
-
-// Create a map to hold the new fields
-        Map<String, Object> newData = new HashMap<>();
-        newData.put("status", status);
-
-
-// Add the new fields to the document
-        userRef.update(newData)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "status:"+status, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // The fields could not be added to the document
-                        Toast.makeText(getApplicationContext(),"aaaa"+ e, Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-
-    }
 
 
 
 
-    @Override
-    protected void onDestroy() {
-     //   status("offline");
-        super.onDestroy();
 
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-       // status("online");
-
-    }
 }
