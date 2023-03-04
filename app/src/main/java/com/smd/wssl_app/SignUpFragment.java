@@ -106,8 +106,12 @@ FirebaseAuth mauth;FirebaseFirestore db;
 //                buttonSendEmail(email_full);
 //                Toast.makeText(getContext(), "email sent", Toast.LENGTH_SHORT).show();
                 if(!email_full.isEmpty() && !password_full.isEmpty() && email_full.contains("@") && password_full.length()>6){
+                  if(email_full.contains("@uowmail.edu.au") || email_full.contains("@uow.edu.au")){
                     sendOTPEmail("+923098991009",123456);
-                showCustomDialog();
+                showCustomDialog();}
+                  else{
+                      Toast.makeText(getContext(), "Out of Domain, can't sign you up", Toast.LENGTH_LONG).show();
+                  }
 
                 }
                 else{
@@ -222,6 +226,8 @@ FirebaseAuth mauth;FirebaseFirestore db;
             @Override
             public void onClick(View view) {
                 dialogBuilder.dismiss();
+              
+                
                 registerUser(email_full,password_full);
 
 

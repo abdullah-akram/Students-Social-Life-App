@@ -396,7 +396,7 @@ return img_url;
 
     @Override
     protected void onDestroy() {
-        //   status("offline");
+           status("offline");
         super.onDestroy();
 
     }
@@ -404,7 +404,7 @@ return img_url;
     @Override
     protected void onStart() {
         super.onStart();
-        // status("online");
+         status("online");
 
     }
 
