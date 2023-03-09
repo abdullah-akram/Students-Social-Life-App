@@ -27,7 +27,7 @@ android:layout_alignParentEnd="true"
         android:padding="8dp"
         android:layout_centerVertical="true"
 
-        android:gravity="center"
+        android:gravity="left"
         android:background="@drawable/oval_message_darkblue"
          />
 
