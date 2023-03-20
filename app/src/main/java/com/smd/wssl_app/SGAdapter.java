@@ -22,8 +22,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.w3c.dom.Text;
@@ -39,6 +42,8 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
     List<SGModel> ls;
     Context c;
     FirebaseAuth mauth;
+    int numberOfDocuments =0;
+
 
 
     public SGAdapter(List<SGModel> ls, Context c) {
@@ -61,7 +66,6 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
         holder.name.setText(ls.get(position).getName());
         holder.longname.setText(ls.get(position).getLongname());
         holder.no_of_members.setText(ls.get(position).getAmount_of_users());
-
         check(ls.get(position).getName(),holder);
 
         holder.name.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +74,7 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
                 if(holder.join.getText()=="Joined"){
                     Intent i = new Intent(c,ChatPage.class);
                     i.putExtra("chat_name",ls.get(position).getName());
+                    i.putExtra("type","sg");
                     c.startActivity(i);}
             }
         });
@@ -93,6 +98,9 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
                     getData(ls.get(position).getName().toString());
                     holder.join.setText("Joined");
                     holder.join.setBackgroundResource(R.color.gray);
+                    Log.d("taggg",ls.get(position).getName().toString());
+                    inc(ls.get(position).getName().toString());
+
                 }
 
             }
@@ -209,4 +217,86 @@ img = itemView.findViewById(R.id.profile_image);
             }
         });
     }
+
+    public void incrementmembers(String grp){
+        // Get the Firestore instance
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+// Get a reference to the "finance_group" document
+        DocumentReference financeGroupRef = db.collection("groups").document(grp);
+
+// Get a reference to the "chatmembers" collection inside the "finance_group" document
+        CollectionReference chatMembersRef = financeGroupRef.collection("chatmembers");
+
+// Get the number of documents inside the "chatmembers" collection
+        chatMembersRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                     numberOfDocuments = task.getResult().size();
+                    Log.d("TAG", "Number of documents inside 'chatmembers': " + numberOfDocuments);
+                } else {
+                    Log.e("TAG", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+    }
+
+    private void inc(String title){
+        Log.d("taggg",title);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .build();
+        firestore.setFirestoreSettings(settings);
+
+        Query query = firestore.collection("subject-groups")
+                .whereEqualTo("name", title);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                    for (DocumentSnapshot document : documents) {
+                        DocumentReference documentRef = document.getReference();
+                        firestore.runTransaction(new Transaction.Function<Void>() {
+                            @Override
+                            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                                DocumentSnapshot snapshot = transaction.get(documentRef);
+                                String fieldValue = snapshot.getString("amount_of_users");
+                                int fieldValueInt = Integer.parseInt(fieldValue);
+                                fieldValueInt++;
+                                fieldValue = Integer.toString(fieldValueInt);
+                                transaction.update(documentRef, "amount_of_users", fieldValue);
+                                Log.d("firer",fieldValue);
+
+                                return null;
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // The transaction was successful.
+                                Log.d("firer","---YES");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // The transaction failed.
+                                Log.d("firer","---no");
+
+                            }
+                        });
+                    }
+                } else {
+                    // The query failed.
+                    Log.d("firer","---no");
+
+                }
+            }
+        });
+
+    }
+
+
+
 }

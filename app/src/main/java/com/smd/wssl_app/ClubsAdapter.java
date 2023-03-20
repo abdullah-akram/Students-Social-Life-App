@@ -25,9 +25,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -75,7 +78,9 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
                 if(holder.join.getText()=="Joined"){
                 Intent i = new Intent(c,ChatPage.class);
                 i.putExtra("chat_name",ls.get(position).getClub_name());
-                c.startActivity(i);}
+                    i.putExtra("type","club");
+
+                    c.startActivity(i);}
             }
         });
 
@@ -94,10 +99,14 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
 if(holder.join.getText()!="Joined"){
+    Log.d("taggg",ls.get(position).getClub_name().toString());
+
     //add user to club
     getData(ls.get(position).getClub_name());
     holder.join.setText("Joined");
     holder.join.setBackgroundResource(R.color.gray);
+    inc(ls.get(position).getClub_name().toString());
+
 }
 
             }
@@ -214,5 +223,60 @@ TextView no_of_members;
         });
     }
 
+
+    private void inc(String title){
+        Log.d("taggg",title);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .build();
+        firestore.setFirestoreSettings(settings);
+
+        Query query = firestore.collection("clubs")
+                .whereEqualTo("club_name", title);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                    for (DocumentSnapshot document : documents) {
+                        DocumentReference documentRef = document.getReference();
+                        firestore.runTransaction(new Transaction.Function<Void>() {
+                            @Override
+                            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                                DocumentSnapshot snapshot = transaction.get(documentRef);
+                                String fieldValue = snapshot.getString("members");
+                                int fieldValueInt = Integer.parseInt(fieldValue);
+                                fieldValueInt++;
+                                fieldValue = Integer.toString(fieldValueInt);
+                                transaction.update(documentRef, "members", fieldValue);
+                                Log.d("firer",fieldValue);
+
+                                return null;
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // The transaction was successful.
+                                Log.d("firer","---YES");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // The transaction failed.
+                                Log.d("firer","---no");
+
+                            }
+                        });
+                    }
+                } else {
+                    // The query failed.
+                    Log.d("firer","---no");
+
+                }
+            }
+        });
+
+    }
 
 }

@@ -85,7 +85,7 @@ ImageButton back;
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
 
-                                ls.add(new ClubModel(document.getString("club_name"),document.getString("amount_of_users")+" Members",document.getString("interest"),document.getString("dp")));
+                                ls.add(new ClubModel(document.getString("club_name"),document.getString("members")+" Members",document.getString("interest"),document.getString("dp")));
                                 adapter.notifyDataSetChanged();
 
                             }

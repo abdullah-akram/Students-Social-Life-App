@@ -29,9 +29,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -57,7 +60,7 @@ FirebaseAuth mauth;
     MessagesAdapter adapter;
 FirebaseFirestore db;
 List<ChatModel> ls;
-    String loggedname;
+    String loggedname,typee;
 
 
     @Override
@@ -82,6 +85,7 @@ db  = FirebaseFirestore.getInstance();
         sendmessage = findViewById(R.id.sendmessage);
         Bundle extras = getIntent().getExtras();
          loggedname = extras.getString("chat_name");
+         typee = extras.getString("type");
         chat_name = findViewById(R.id.chat_name);
         chat_name.setText(loggedname);
 
@@ -337,6 +341,7 @@ return img_url;
 
                             // Document deleted successfully
                             Toast.makeText(getApplicationContext(), "Group Left Successfully", Toast.LENGTH_SHORT).show();
+                            decc(loggedname);
                             finish();
                         }
                     })
@@ -392,6 +397,121 @@ return img_url;
                 });
 
 
+    }
+
+
+    private void decc(String title){
+        Log.d("opop",typee);
+        if(typee.equals("club")) {
+            Log.d("taggg", title);
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .build();
+            firestore.setFirestoreSettings(settings);
+
+            Query query = firestore.collection("clubs")
+                    .whereEqualTo("club_name", title);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                        for (DocumentSnapshot document : documents) {
+                            DocumentReference documentRef = document.getReference();
+                            firestore.runTransaction(new Transaction.Function<Void>() {
+                                @Override
+                                public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                                    DocumentSnapshot snapshot = transaction.get(documentRef);
+                                    String fieldValue = snapshot.getString("members");
+                                    int fieldValueInt = Integer.parseInt(fieldValue);
+                                    fieldValueInt--;
+                                    fieldValue = Integer.toString(fieldValueInt);
+                                    transaction.update(documentRef, "members", fieldValue);
+                                    Log.d("firer", fieldValue);
+                                    Log.d("opop",
+                                            "cmonnn");
+
+                                    return null;
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // The transaction was successful.
+                                    Log.d("firer", "---YES");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // The transaction failed.
+                                    Log.d("firer", "---no");
+
+                                }
+                            });
+                        }
+                    } else {
+                        // The query failed.
+                        Log.d("firer", "---no");
+
+                    }
+                }
+            });
+        }
+        else  if(typee.equals("sg")) {
+            Log.d("taggg", title);
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .build();
+            firestore.setFirestoreSettings(settings);
+
+            Query query = firestore.collection("subject-groups")
+                    .whereEqualTo("name", title);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                        for (DocumentSnapshot document : documents) {
+                            DocumentReference documentRef = document.getReference();
+                            firestore.runTransaction(new Transaction.Function<Void>() {
+                                @Override
+                                public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                                    DocumentSnapshot snapshot = transaction.get(documentRef);
+                                    String fieldValue = snapshot.getString("amount_of_users");
+                                    int fieldValueInt = Integer.parseInt(fieldValue);
+                                    fieldValueInt--;
+                                    fieldValue = Integer.toString(fieldValueInt);
+                                    transaction.update(documentRef, "amount_of_users", fieldValue);
+                                    Log.d("firer", fieldValue);
+                                    Log.d("opop",
+                                            "cmonnn");
+
+                                    return null;
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // The transaction was successful.
+                                    Log.d("firer", "---YES");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // The transaction failed.
+                                    Log.d("firer", "---no");
+
+                                }
+                            });
+                        }
+                    } else {
+                        // The query failed.
+                        Log.d("firer", "---no");
+
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +26,9 @@ import com.google.firebase.firestore.SetOptions;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +49,20 @@ FirebaseFirestore db;
         clubs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("poos","clubs1");
+
+                try {
+//                    FileInputStream file = new FileInputStream(new File("F:/clubs.xlsx"));
+                    File file = new File(Environment.getExternalStorageDirectory(), "F:/clubs.xlsx");
+                    FileInputStream inputStream = new FileInputStream(file);
+
+                    Log.d("poos","clubs2");
+
+                } catch (FileNotFoundException e) {
+                    Log.d("poos",e.toString());
+                    e.printStackTrace();
+                }
+
                 Intent i = new Intent(HomeScreen.this,ClubsPage.class);
                 startActivity(i);
             }

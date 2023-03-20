@@ -67,6 +67,7 @@ FirebaseAuth mauth;
 
     ImageViewAdapter adapter;
 TextView sgrv;
+TextView uname;
     EditText name, aboutme;
     ImageButton home,football,groups,notifications,profile;
     FirebaseFirestore db;
@@ -85,6 +86,7 @@ TextView sgrv;
         logout = findViewById(R.id.logout);
         u = findViewById(R.id.usernamee);
         p = findViewById(R.id.password);
+        uname = findViewById(R.id.uname);
         sgrv = findViewById(R.id.SGrv);
         back = findViewById(R.id.back);
         update = findViewById(R.id.update);
@@ -211,7 +213,25 @@ else
                     // Document exists, retrieve data
                     String namee = documentSnapshot.getString("name");
                         String aboutmee = documentSnapshot.getString("aboutme");
+                        String una = documentSnapshot.getString("email");
                     name.setText(namee);
+                    uname.setText(una.substring(0, una.length() - 10));
+
+                    int iend = una.indexOf("@"); //this finds the first occurrence of "."
+//in string thus giving you the index of where it is in the string
+
+// Now iend can be -1, if lets say the string had no "." at all in it i.e. no "." is found.
+//So check and account for it.
+
+                    String subString;
+                    if (iend != -1)
+                    {
+                        subString= una.substring(0 , iend); //this will give abc
+                        uname.setText(subString);
+
+                    }
+
+
                     if(!aboutmee.isEmpty())
                     aboutme.setText(aboutmee);
                     else
