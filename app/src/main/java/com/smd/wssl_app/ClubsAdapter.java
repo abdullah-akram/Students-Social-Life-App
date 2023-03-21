@@ -47,11 +47,28 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
     List<ClubModel> ls;
     Context c;
     FirebaseAuth mauth;
+//    ClubRecommendationSystem clubRecommendationSystem;
+//    int [] clubs = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+//    String [] club = {"Arts Club","Cyber Gaming Club","Finance Club","Computer Science Club","Engineering Club ","Politics Club ","UOWD Club","Football Club","Cricket Club","Basketball Club","Cars Club","Chess Club ","Outdoors Club","Movies Club","Photography Club","Anime Club","Sharing Club","Food Club","Literature Club","Language Club"};
+
 
     public ClubsAdapter(List<ClubModel> ls, Context c) {
         this.ls = ls;
         this.c = c;
         mauth = FirebaseAuth.getInstance();
+//        clubRecommendationSystem = new ClubRecommendationSystem();
+//        try {
+//            clubRecommendationSystem.suggest(clubs);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            checker();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @NonNull
@@ -99,6 +116,14 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
 if(holder.join.getText()!="Joined"){
+
+//    try {
+//        checker();
+//    } catch (InterruptedException e) {
+//        e.printStackTrace();
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
     Log.d("taggg",ls.get(position).getClub_name().toString());
 
     //add user to club
@@ -223,6 +248,59 @@ TextView no_of_members;
         });
     }
 
+//    public void checke() throws Exception {
+//        Log.d("callere","recommendation called");
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        for (int i=0;i<club.length;i++)
+//        {
+//
+//            CollectionReference colRef = db.collection("groups").document(club[i]).collection("chatmembers");
+//            Query query = colRef.whereEqualTo("uid", currentUserId);
+//            int finalI = i;
+//            int finalI1 = i;
+//            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        if (task.getResult().isEmpty()) {
+//
+//                            Log.d("TAGGG", "User ID not found in chatmembers collection"+String.valueOf(finalI1));
+////                        Toast.makeText(c, "User not found", Toast.LENGTH_SHORT).show();
+//
+//
+//                        } else {
+//                            Log.d("TAGGGED", "User ID found in chatmembers collection"+String.valueOf(finalI1));
+////                        Toast.makeText(c, "User found", Toast.LENGTH_SHORT).show();
+//                            clubs[finalI]=1;
+//                        }
+//                    } else {
+//                        Log.d("TAG", "Error getting documents: ", task.getException());
+//                    }
+//                }
+//            });
+//        }
+//
+//
+//        Log.d("opopop", "received");
+//    }
+//
+//
+//    public void checker() throws Exception {
+//        checke();
+//
+//        for (int i=0;i<clubs.length;i++)
+//            Log.d("opopd", String.valueOf(clubs[i]));
+////        wait(5);
+//        Log.d("opopop", "receiver");
+//        String [] suggestions = clubRecommendationSystem.suggest(clubs);
+//
+//        Log.d("opopop", "receivers");
+//
+//        for (int i=0;i<suggestions.length;i++)
+//            Log.d("sugger", String.valueOf(suggestions[i]));
+//
+//    }
 
     private void inc(String title){
         Log.d("taggg",title);
@@ -278,5 +356,6 @@ TextView no_of_members;
         });
 
     }
+
 
 }

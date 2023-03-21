@@ -22,10 +22,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
+import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -35,23 +42,63 @@ import java.util.List;
 import java.util.Map;
 
 public class ClubsPage extends AppCompatActivity {
-ImageButton back;
+ImageButton back,c1,c2,c3,c4;
+ImageButton[] c;
     RecyclerView rv;
     EditText search_bar;
+
     Button search;
 
     List<ClubModel> ls;
     ClubsAdapter adapter;
     FirebaseFirestore db;
     FirebaseAuth mauth;
+    ClubRecommendationSystem clubRecommendationSystem;
+    int [] clubs = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    String [] club = {"Arts Club","Cyber Gaming Club","Finance Club","Computer Science Club","Engineering Club ","Politics Club ","UOWD Club","Football Club","Cricket Club","Basketball Club","Cars Club","Chess Club ","Outdoors Club","Movies Club","Photography Club","Anime Club","Sharing Club","Food Club","Literature Club","Language Club"};
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
         setContentView(R.layout.activity_clubs_page);
         Navbarfunctions();
         db = FirebaseFirestore.getInstance();
         mauth = FirebaseAuth.getInstance();
+
+        c = new ImageButton[4];
+        c[0] = findViewById(R.id.club_1);
+
+        c[1]= findViewById(R.id.club_2);
+        c[2] = findViewById(R.id.club_3);
+        c[3] = findViewById(R.id.club_4);
+        clubRecommendationSystem = new ClubRecommendationSystem();
+        try {
+            clubRecommendationSystem.suggest(clubs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+        String outt[] =    checker();
+//            for (int i=0;i<outt.length;i++) {
+//                Log.d("sugger", String.valueOf(outt[i]));
+                updatesuggestions(outt);
+
+
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
 
         back = findViewById(R.id.back);
@@ -68,6 +115,7 @@ ImageButton back;
 
 
         adapter=new ClubsAdapter(ls,ClubsPage.this);
+
         rv.setAdapter(adapter);
         RecyclerView.LayoutManager lm=new LinearLayoutManager(ClubsPage.this);
         rv.setLayoutManager(lm);
@@ -128,7 +176,42 @@ ImageButton back;
 
     }
 
+    private void updatesuggestions(String[] title) {
+        Log.d("pkpkpkk",title[0]);
+        Log.d("pkpkpkk",title[1]);
+        Log.d("pkpkpkk",title[2]);
+        Log.d("pkpkpkk",title[3]);
 
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .build();
+        firestore.setFirestoreSettings(settings);
+for(int p=0;p<title.length;p++){
+        Query query = firestore.collection("clubs")
+                .whereEqualTo("club_name", title[p]);
+    int finalP = p;
+    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+               QuerySnapshot documentSnapshot = task.getResult();
+                List<DocumentSnapshot> documents = documentSnapshot.getDocuments();
+                int i=0;
+                for (DocumentSnapshot document : documents) {
+                    if(document.getString("dp")!=null) {
+                        Log.d("pkpkpk", document.getString("dp"));
+                        Log.d("pkpkpk", String.valueOf(finalP));
+
+                            Picasso.get().load(document.getString("dp")).into(c[finalP]);
+
+
+                    }
+                    i++;
+                }
+
+                }
+        });
+}
+    }
 
 
     public void Navbarfunctions(){
@@ -189,7 +272,59 @@ ImageButton back;
 
 
     }
+    public void checke() throws Exception {
+        Log.d("callere","recommendation called");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        for (int i=0;i<club.length;i++)
+        {
 
+            CollectionReference colRef = db.collection("groups").document(club[i]).collection("chatmembers");
+            Query query = colRef.whereEqualTo("uid", currentUserId);
+            int finalI = i;
+            int finalI1 = i;
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+
+                            Log.d("TAGGG", "User ID not found in chatmembers collection"+String.valueOf(finalI1));
+//                        Toast.makeText(c, "User not found", Toast.LENGTH_SHORT).show();
+
+
+                        } else {
+                            Log.d("TAGGGED", "User ID found in chatmembers collection"+String.valueOf(finalI1));
+//                        Toast.makeText(c, "User found", Toast.LENGTH_SHORT).show();
+                            clubs[finalI]=1;
+                        }
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        }
+
+
+        Log.d("opopop", "received");
+    }
+
+
+    public String[] checker() throws Exception {
+        checke();
+
+        for (int i=0;i<clubs.length;i++)
+            Log.d("opopd", String.valueOf(clubs[i]));
+//        wait(5);
+        Log.d("opopop", "receiver");
+        String [] suggestions = clubRecommendationSystem.suggest(clubs);
+
+        Log.d("opopop", "receivers");
+
+//        for (int i=0;i<suggestions.length;i++)
+//            Log.d("sugger", String.valueOf(suggestions[i]));
+return suggestions;
+    }
     private void filter(String text){
         ArrayList<ClubModel> filteredstalls = new ArrayList<>();
         for(ClubModel item: ls){
@@ -199,4 +334,6 @@ ImageButton back;
         }
         adapter.filterlist(filteredstalls);
     }
+
+
 }
