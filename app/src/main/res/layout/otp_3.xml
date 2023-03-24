@@ -58,13 +58,13 @@
 
         android:layout_gravity="center"
         android:gravity="center"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/blue"
         android:textColor="@color/white"
         android:textAllCaps="false"
 
         android:text="Accept"
         android:textStyle="bold"
-        app:cornerRadius = "40dp"
+        app:cornerRadius = "5dp"
         ></Button>
 
 
@@ -83,13 +83,13 @@
 
             android:layout_gravity="center"
             android:gravity="center"
-            android:backgroundTint="@color/gray"
+            android:backgroundTint="@color/red"
             android:textColor="@color/white"
 
             android:text="Reject"
             android:textAllCaps="false"
             android:textStyle="bold"
-            app:cornerRadius = "40dp"
+            app:cornerRadius = "5dp"
             ></Button>
 
 

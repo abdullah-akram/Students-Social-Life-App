@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:weightSum="8"
     tools:context=".HomeScreen"
-    android:background="@drawable/gradient_color"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +14,7 @@
         android:layout_weight="0.98"
         android:padding="10dp"
         android:weightSum="10"
+        android:background="@drawable/gradient_color"
         >
         <ImageButton
             android:layout_width="0dp"
@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:id="@+id/leave"
             android:layout_weight="1"
-            android:background="@drawable/ic_baseline_edit_24"/>
+            android:background="@drawable/ic_baseline_logout_24"/>
 
 
 
@@ -65,6 +65,7 @@
     android:layout_height="0dp"
     android:id="@+id/rv"
     android:layout_weight="5.5"
+    android:background="@color/white"
     />
 
     <FrameLayout

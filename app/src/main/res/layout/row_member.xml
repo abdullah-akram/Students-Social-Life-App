@@ -67,6 +67,7 @@ android:textStyle="bold"
 
         </LinearLayout>
             <ImageView
+                android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:id="@+id/status"

@@ -66,7 +66,7 @@ LLC"/>
                 android:gravity="center_vertical"
                 android:layout_marginLeft="3dp"
                 android:fontFamily="sans-serif-thin"
-                android:textFontWeight="500"
+                android:textFontWeight="300"
                 android:textColor="@color/blue"
 
                 android:text="Internship : AED 1,200/ per month"/>

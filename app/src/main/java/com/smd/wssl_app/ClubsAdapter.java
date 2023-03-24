@@ -47,6 +47,8 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
     List<ClubModel> ls;
     Context c;
     FirebaseAuth mauth;
+    HashMap<Integer, Boolean> buttonStates = new HashMap<>();
+
 //    ClubRecommendationSystem clubRecommendationSystem;
 //    int [] clubs = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 //    String [] club = {"Arts Club","Cyber Gaming Club","Finance Club","Computer Science Club","Engineering Club ","Politics Club ","UOWD Club","Football Club","Cricket Club","Basketball Club","Cars Club","Chess Club ","Outdoors Club","Movies Club","Photography Club","Anime Club","Sharing Club","Food Club","Literature Club","Language Club"};
@@ -81,13 +83,28 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
+        Boolean isButtonGray = buttonStates.get(position);
+        if (isButtonGray == null) {
+            // the button state for this item has not been set yet, set it to false (not gray)
+            isButtonGray = false;
+            buttonStates.put(position, isButtonGray);
+        }
+
+        if (isButtonGray) {
+            holder.join.setBackgroundResource(R.color.gray);
+            holder.join.setText("Joined");
+
+        } else {
+            holder.join.setBackgroundResource(R.drawable.gradient_color_2);
+            holder.join.setText("Join");
+        }
 
         holder.name.setText(ls.get(position).getClub_name());
         String users = ls.get(position).getAmount_of_users();
         holder.no_of_members.setText((users));
 
         Picasso.get().load(ls.get(position).getClub_image()).into(holder.img);
-        check(ls.get(position).getClub_name(),holder);
+        check(ls.get(position).getClub_name(),holder,position);
 
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,19 +134,21 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
             public void onClick(View view) {
 if(holder.join.getText()!="Joined"){
 
-//    try {
-//        checker();
-//    } catch (InterruptedException e) {
-//        e.printStackTrace();
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//    }
-    Log.d("taggg",ls.get(position).getClub_name().toString());
 
-    //add user to club
+    Log.d("tagggg",ls.get(position).getClub_name().toString());
+
     getData(ls.get(position).getClub_name());
-    holder.join.setText("Joined");
+
+
+//    holder.join.setText("Joined");
+//    holder.join.setBackgroundResource(R.color.gray);
+
+    buttonStates.put(position, true);
+    // set the background color to gray
     holder.join.setBackgroundResource(R.color.gray);
+    holder.join.setText("Joined");
+
+
     inc(ls.get(position).getClub_name().toString());
 
 }
@@ -220,8 +239,9 @@ TextView no_of_members;
     }
 
 
-    private void check(String club_name, ClubsAdapter.MyViewHolder holder){
+    private void check(String club_name, ClubsAdapter.MyViewHolder holder,int poss){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         CollectionReference colRef = db.collection("groups").document(club_name).collection("chatmembers");
         Query query = colRef.whereEqualTo("uid", currentUserId);
@@ -229,17 +249,19 @@ TextView no_of_members;
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult().isEmpty()) {
+                    if (!task.getResult().isEmpty()) {
+Log.d("cmooo",String.valueOf(poss));
+Log.d("cmooo",club_name);
 
-                        Log.d("TAG", "User ID not found in chatmembers collection");
-//                        Toast.makeText(c, "User not found", Toast.LENGTH_SHORT).show();
 
-                    } else {
                         holder.join.setText("Joined");
                         holder.join.setBackgroundResource(R.color.gray);
                         Log.d("TAG", "User ID found in chatmembers collection");
 //                        Toast.makeText(c, "User found", Toast.LENGTH_SHORT).show();
 
+                    } else {
+                        Log.d("TAG", "User ID not found in chatmembers collection");
+//                        Toast.makeText(c, "User not found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());

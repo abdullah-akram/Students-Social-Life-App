@@ -75,7 +75,7 @@ public class InternshipsPage extends AppCompatActivity {
                                 String type = document.getString("type");
                                 Log.d("fire",  "22222"+document.getString("type")+"2222");
 
-                                ls.add(new InternshipModel(document.getString("title"),type+": "+document.getString("salary")+"/month",document.getString("location"),document.getString("interested")+" interested"));
+                                ls.add(new InternshipModel(document.getString("title"),type+": "+document.getString("salary")+"/month",document.getString("location"),document.getString("interested")+" interested", document.getString("link")));
                                 adapter.notifyDataSetChanged();
 
                             }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/gradient_color"
     android:layout_height="match_parent"
     tools:context=".Welcome">
 
@@ -19,6 +20,7 @@
 
 <TextView
     android:layout_width="match_parent"
+    android:textColor="@color/white"
     android:layout_height="200dp"
     android:id="@+id/text"
     android:layout_marginRight="30dp"
@@ -31,7 +33,7 @@
     <Button
         android:id="@+id/button"
         android:layout_below="@+id/text"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_centerHorizontal="true"
         android:layout_height="70dp"
         android:layout_marginStart="20dp"
@@ -43,12 +45,12 @@
         android:height="20dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/red"
         android:textColor="@color/white"
 
         android:text="Next"
         android:textAllCaps="false"
         android:textStyle="bold"
-        app:cornerRadius = "40dp"></Button>
+        app:cornerRadius = "10dp"></Button>
 
 </RelativeLayout>

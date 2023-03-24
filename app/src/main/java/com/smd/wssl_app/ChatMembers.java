@@ -43,7 +43,7 @@ public class ChatMembers extends AppCompatActivity {
     FirebaseAuth mauth;
     ChatMembersAdapter adapter;
     FirebaseFirestore db;
-    TextView num;
+    TextView num,chat_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,9 @@ public class ChatMembers extends AppCompatActivity {
         uid = mauth.getUid();
         db = FirebaseFirestore.getInstance();
         Bundle extras = getIntent().getExtras();
+        chat_name = findViewById(R.id.chat_name);
         loggedname = extras.getString("chat_name");
+        chat_name.setText(loggedname.toString());
         rv = findViewById(R.id.rv);
         ls=new ArrayList<>();
 
@@ -103,7 +105,8 @@ public class ChatMembers extends AppCompatActivity {
                             t= documentSnapshot.getString("name");
 
                             i = documentSnapshot.getString("dp");
-                            ls.add(new ChatMemberModel(i,t,"student","offline"));
+
+                            ls.add(new ChatMemberModel(i,t,"student","offline",documentSnapshot.getString("uid")));
 //                            Log.d("yess", "plplplplpl"+document.getString("status")+document.getString("email"));
 
 //                            getstatus(documentSnapshot.getString("uid"));

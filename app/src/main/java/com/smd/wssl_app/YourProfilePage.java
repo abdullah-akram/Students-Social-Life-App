@@ -81,9 +81,10 @@ TextView uname;
         setContentView(R.layout.activity_your_profile_page);
 
         mauth = FirebaseAuth.getInstance();
+        logout = findViewById(R.id.logout);
+
         Navbarfunctions();
         suggestions();
-        logout = findViewById(R.id.logout);
         u = findViewById(R.id.usernamee);
         p = findViewById(R.id.password);
         uname = findViewById(R.id.uname);

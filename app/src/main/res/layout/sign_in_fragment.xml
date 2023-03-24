@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+android:background="@drawable/gradient_color"
     android:layout_height="match_parent">
 
     <EditText
@@ -44,12 +44,13 @@
         android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Forget Password ?"/>
 
     <Button
         android:id="@+id/signin"
         android:layout_below="@+id/remember"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_centerHorizontal="true"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
@@ -61,16 +62,17 @@
         android:height="20dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/red"
         android:textColor="@color/white"
 
         android:text="Sign in"
         android:textStyle="bold"
-        app:cornerRadius = "40dp"
+        app:cornerRadius = "10dp"
         ></Button>
 
     <TextView
         android:id="@+id/already"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signin"

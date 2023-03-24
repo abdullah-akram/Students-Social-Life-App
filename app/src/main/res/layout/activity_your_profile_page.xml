@@ -69,12 +69,13 @@
         android:layout_width="190dp"
         android:layout_gravity="center"
         android:layout_height="150dp"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="10dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/line"
 
 android:id="@+id/img"
         app:cardBackgroundColor="@color/gray"
+
         android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"
         android:padding="10dp"
@@ -91,24 +92,24 @@ android:adjustViewBounds="true"
             />
     </androidx.cardview.widget.CardView>
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/img"
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/img"
 
-        android:text="Peter Thiel"
-        android:gravity="center"
-        android:textSize="20sp"
-android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:focusedByDefault="false"
+            android:background="@null"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:focusedByDefault="false"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
 
-        android:background="@null"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/black"
+            android:text="Peter Thiel"
+            android:textColor="@color/white"
+            android:textSize="25sp"
 
-        />
+            />
 
         <TextView
             android:id="@+id/uname"
@@ -120,7 +121,7 @@ android:focusable="false"
             android:gravity="center"
 
             android:text="pgq371"
-            android:textColor="@color/gray"
+            android:textColor="#A5A5A5"
             android:textSize="12sp"
 
             />
@@ -136,7 +137,7 @@ android:focusable="false"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="All Clubs"
-            android:textColor="@color/gray"
+            android:textColor="#BCBCBC"
             android:textSize="20sp"
 
             />

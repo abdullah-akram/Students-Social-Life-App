@@ -3,8 +3,10 @@ package com.smd.wssl_app;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +71,8 @@ public class InternshipsAdapter extends RecyclerView.Adapter<InternshipsAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCustomDialog(ls.get(position).getName(),ls.get(position).getPay(),ls.get(position).getAddress());
+                showCustomDialog(ls.get(position).getName(),ls.get(position).getPay(),ls.get(position).getAddress(),ls.get(position).getLink());
+
             }
         });
 
@@ -106,7 +109,7 @@ public class InternshipsAdapter extends RecyclerView.Adapter<InternshipsAdapter.
     }
 
 
-    private void showCustomDialog(String title,String pay,String address) {
+    private void showCustomDialog(String title,String pay,String address,String link) {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(c).create();
         LayoutInflater inflater = LayoutInflater.from(c);
         View dialogView = inflater.inflate(R.layout.leave_chat, null);
@@ -127,6 +130,9 @@ public class InternshipsAdapter extends RecyclerView.Adapter<InternshipsAdapter.
                 dialogBuilder.dismiss();
                 add_to_db(title);
                 inc(title);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(link));
+                c.startActivity(intent);
 
             }
         });

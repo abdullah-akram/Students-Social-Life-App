@@ -9,9 +9,10 @@
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/circle_black.xml" value="0.11851851851851852" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/custom_edittext.xml" value="0.215625" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/gradient_color.xml" value="0.165625" />
-        <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/gradient_color_2.xml" value="0.9464285714285714" />
+        <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/gradient_color_2.xml" value="0.16" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/gradient_color_3.xml" value="0.16979166666666667" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/ic_baseline_logout_24.xml" value="0.1361111111111111" />
+        <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/ic_baseline_pin.xml" value="0.11458333333333333" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/ic_round_home_24.xml" value="0.165625" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/oval_message.xml" value="0.11944444444444445" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/drawable/round_button.xml" value="0.16822916666666668" />
@@ -29,6 +30,7 @@
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_internship_category.xml" value="0.23427331887201736" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_internships_page.xml" value="0.25" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_main.xml" value="0.19947916666666668" />
+        <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_member_profile.xml" value="0.17916666666666667" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_sign_in_fragment.xml" value="0.19947916666666668" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_sign_up.xml" value="0.15208333333333332" />
         <entry key="..\:/SMD_Projects/WSSL_App/app/src/main/res/layout/activity_sign_up_login.xml" value="0.22" />
