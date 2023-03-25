@@ -141,7 +141,7 @@ if(holder.join.getText()!="Joined"){
 
 
     holder.join.setText("Joined");
-    holder.join.setBackgroundResource(R.color.gray);
+    holder.join.setBackgroundResource(R.drawable.gradient_color_gray);
 
 
 
