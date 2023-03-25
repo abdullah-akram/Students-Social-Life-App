@@ -140,8 +140,8 @@ if(holder.join.getText()!="Joined"){
     getData(ls.get(position).getClub_name());
 
 
-//    holder.join.setText("Joined");
-//    holder.join.setBackgroundResource(R.color.gray);
+    holder.join.setText("Joined");
+    holder.join.setBackgroundResource(R.color.gray);
 
 
 
