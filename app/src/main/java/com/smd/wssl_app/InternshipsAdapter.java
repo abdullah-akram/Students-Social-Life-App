@@ -112,12 +112,15 @@ public class InternshipsAdapter extends RecyclerView.Adapter<InternshipsAdapter.
     private void showCustomDialog(String title,String pay,String address,String link) {
         final AlertDialog dialogBuilder = new AlertDialog.Builder(c).create();
         LayoutInflater inflater = LayoutInflater.from(c);
-        View dialogView = inflater.inflate(R.layout.leave_chat, null);
+        View dialogView = inflater.inflate(R.layout.apply_internship, null);
         dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView textView = dialogView.findViewById(R.id.textView);
-        textView.setText("Are you sure you want to apply for this internship\n" +
-                "Title: "+title+"\nType & Pay: "+pay+"\nAddress: "+address);
+        String t1 = pay.split(":")[0];
+        String t2 = pay.split(":")[1];
+
+        textView.setText(
+                "Title: "+title+"\nType: "+t1+"\nPay: "+t2+"\nAddress: "+address);
 
 
         Button button = dialogView.findViewById(R.id.confirm);

@@ -38,8 +38,7 @@ android:textColor="@color/white"
 android:layout_below="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-         android:background="blue"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="#053287"
         android:text="Sign in"
         style="?android:attr/borderlessButtonStyle"
 
@@ -57,7 +56,6 @@ android:layout_below="@+id/text"
         android:layout_below="@+id/text"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/signin"
-        android:background="blue"
 
 
         android:gravity="bottom"

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -219,6 +220,59 @@ FirebaseAuth mauth;FirebaseFirestore db;
 
 
         Button button = dialogView.findViewById(R.id.accept);
+        Button button2 = dialogView.findViewById(R.id.reject);
+        TextView text2 = dialogView.findViewById(R.id.text2);
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+
+        text2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               showCustomDialog4();
+
+
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+                                    Toast.makeText(getContext(), "Email Sent for verification", Toast.LENGTH_SHORT).show();
+
+
+                registerUser(email_full,password_full);
+
+
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+
+
+            }
+        });
+
+
+
+    }
+
+    private void showCustomDialog4() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(getContext()).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.terms, null);
+        dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+
+        ImageButton button = dialogView.findViewById(R.id.back);
+
+
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
 
@@ -227,9 +281,6 @@ FirebaseAuth mauth;FirebaseFirestore db;
             @Override
             public void onClick(View view) {
                 dialogBuilder.dismiss();
-              
-                
-                registerUser(email_full,password_full);
 
 
             }
@@ -273,7 +324,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
                                     @Override
                                     public void onComplete(Task<Void> task) {
                                         Log.d("fire", "DocumentSnapshot successfully written!");
-                                    Toast.makeText(getContext(), "You can now Sign In after Verification", Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(getContext(), "You can now Sign In after Verification", Toast.LENGTH_LONG).show();
 //                                        Intent i = new Intent(getContext(),HomeScreen.class);
 //                                        startActivity(i);
                                     }
@@ -313,13 +364,12 @@ FirebaseAuth mauth;FirebaseFirestore db;
         mauth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Task<Void> task) {
-                Toast.makeText(getContext(), "Email Sent for verification", Toast.LENGTH_SHORT).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(getContext(), "Not SENT", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Not SENT", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -377,14 +427,7 @@ FirebaseAuth mauth;FirebaseFirestore db;
             }
         };
 
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mauth)
-                        .setPhoneNumber("+923098991009")       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(getActivity())                 // Activity (for callback binding)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                        .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
+
 
     }
 

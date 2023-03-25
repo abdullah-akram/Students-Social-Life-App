@@ -1,12 +1,14 @@
 package com.smd.wssl_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,7 +64,8 @@ FirebaseAuth mauth;
 
     RecyclerView rv;
     EditText u,p;
-    Button update,ai;
+    Button ai;
+    AppCompatButton update;
     List<ImageViewModel> ls;
 
     ImageViewAdapter adapter;
@@ -112,49 +115,49 @@ aboutme  = findViewById(R.id.aboutme);
         getData();
 
 
-        ai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Wait while we fetch data", Toast.LENGTH_SHORT).show();
-                Handler handler = new Handler();
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                         jjk = integrateAI();
-
-                        // post a message to the main thread's message queue when myFunction() is done
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                // execute your function on the main thread here
-                                if(!isFinishing())
-
-                                        if (jjk.equals("T"))
-                                            Toast.makeText(getApplicationContext(), "Enter Details", Toast.LENGTH_SHORT).show();
-
-                                   else if (jjk.equals("N"))
-                                        Toast.makeText(getApplicationContext(), "Logging Error", Toast.LENGTH_SHORT).show();
-
-else
-                                        showCustomDialog(jjk);
-
-                            }
-                        });
-                    }
-                }).start();
-
-
-
-
-
-//                String jjk =integrateAI();
-//                android.os.SystemClock.sleep(20000);
-//                showCustomDialog(jjk);
-
-            }
-        });
+//        ai.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), "Wait while we fetch data", Toast.LENGTH_SHORT).show();
+//                Handler handler = new Handler();
+//
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                         jjk = integrateAI();
+//
+//                        // post a message to the main thread's message queue when myFunction() is done
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                // execute your function on the main thread here
+//                                if(!isFinishing())
+//
+//                                        if (jjk.equals("T"))
+//                                            Toast.makeText(getApplicationContext(), "Enter Details", Toast.LENGTH_SHORT).show();
+//
+//                                   else if (jjk.equals("N"))
+//                                        Toast.makeText(getApplicationContext(), "Logging Error", Toast.LENGTH_SHORT).show();
+//
+//
+//                                      //  showCustomDialog(jjk);
+//
+//                            }
+//                        });
+//                    }
+//                }).start();
+//
+//
+//
+//
+//
+////                String jjk =integrateAI();
+////                android.os.SystemClock.sleep(20000);
+////                showCustomDialog(jjk);
+//
+//            }
+//        });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,10 +189,7 @@ else
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mauth.signOut();
-                Intent i =new Intent(getApplicationContext(),SignUpLogin.class);
-                startActivity(i);
-                finish();
+                showCustomDialog2();
             }
         });
         name = findViewById(R.id.name);
@@ -317,7 +317,10 @@ else
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!this.getClass().getName().contains("Internships")){
 
+                    Intent i = new Intent(getApplicationContext(),InternshipsPage.class);
+                    startActivity(i);}
             }
         });
 
@@ -415,11 +418,14 @@ ArrayList<String> groupids = new ArrayList<>();
                                 if (innerTask.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : innerTask.getResult()) {
                                         String groupId = groupDocument.getId();
+
 //                                        groupids.add(groupId);
                                         // Do something with the group ID
-                                        Log.d("abd","aaa"+groupId);
+                                        Log.d("abdabd","aaa"+groupId);
 //                                        groupids.add(groupId);
+                                        if(!groupId.toLowerCase().contains("club"))
                                         sgrv.setText(sgrv.getText()+ groupId+"\n");
+                                        sgrv.setPaintFlags(sgrv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
 
@@ -606,8 +612,32 @@ suggests.add(splited[0].toLowerCase());
 
     }
 
-//    @Override
-//    public void run() {
-//        integrateAI();
-//    }
+    private void showCustomDialog2() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(YourProfilePage.this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.logout_prompt, null);
+        dialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+        Button button = dialogView.findViewById(R.id.ok);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+                mauth.signOut();
+                Intent i =new Intent(getApplicationContext(),SignUpLogin.class);
+                startActivity(i);
+                finish();
+
+
+            }
+        });
+
+
+
+    }
 }

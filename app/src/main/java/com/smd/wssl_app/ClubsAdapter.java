@@ -91,7 +91,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
         }
 
         if (isButtonGray) {
-            holder.join.setBackgroundResource(R.color.gray);
+            holder.join.setBackgroundResource(R.drawable.gradient_color_gray);
             holder.join.setText("Joined");
 
         } else {
@@ -143,10 +143,7 @@ if(holder.join.getText()!="Joined"){
 //    holder.join.setText("Joined");
 //    holder.join.setBackgroundResource(R.color.gray);
 
-    buttonStates.put(position, true);
-    // set the background color to gray
-    holder.join.setBackgroundResource(R.color.gray);
-    holder.join.setText("Joined");
+
 
 
     inc(ls.get(position).getClub_name().toString());
@@ -255,7 +252,7 @@ Log.d("cmooo",club_name);
 
 
                         holder.join.setText("Joined");
-                        holder.join.setBackgroundResource(R.color.gray);
+                        holder.join.setBackgroundResource(R.drawable.gradient_color_gray);
                         Log.d("TAG", "User ID found in chatmembers collection");
 //                        Toast.makeText(c, "User found", Toast.LENGTH_SHORT).show();
 

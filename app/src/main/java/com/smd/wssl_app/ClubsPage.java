@@ -41,9 +41,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ClubsPage extends AppCompatActivity {
-ImageButton back,c1,c2,c3,c4;
-ImageButton[] c;
+ImageButton back;
+CircleImageView c1,c2,c3,c4;
+CircleImageView[] c;
+
     RecyclerView rv;
     EditText search_bar;
 
@@ -72,7 +76,7 @@ ImageButton[] c;
         db = FirebaseFirestore.getInstance();
         mauth = FirebaseAuth.getInstance();
 
-        c = new ImageButton[4];
+        c = new CircleImageView[4];
         c[0] = findViewById(R.id.club_1);
 
         c[1]= findViewById(R.id.club_2);
@@ -256,7 +260,10 @@ for(int p=0;p<title.length;p++){
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!this.getClass().getName().contains("Internships")){
 
+                    Intent i = new Intent(getApplicationContext(),InternshipsPage.class);
+                    startActivity(i);}
             }
         });
 

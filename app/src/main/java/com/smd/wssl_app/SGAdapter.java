@@ -43,6 +43,8 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
     Context c;
     FirebaseAuth mauth;
     int numberOfDocuments =0;
+    HashMap<Integer, Boolean> buttonStates = new HashMap<>();
+
 
 
 
@@ -67,6 +69,22 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
         holder.longname.setText(ls.get(position).getLongname());
         holder.no_of_members.setText(ls.get(position).getAmount_of_users());
         check(ls.get(position).getName(),holder);
+
+        Boolean isButtonGray = buttonStates.get(position);
+        if (isButtonGray == null) {
+            // the button state for this item has not been set yet, set it to false (not gray)
+            isButtonGray = false;
+            buttonStates.put(position, isButtonGray);
+        }
+
+        if (isButtonGray) {
+            holder.join.setBackgroundResource(R.drawable.gradient_color_gray);
+            holder.join.setText("Joined");
+
+        } else {
+            holder.join.setBackgroundResource(R.drawable.gradient_color_2);
+            holder.join.setText("Join");
+        }
 
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +114,12 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
                 if(holder.join.getText()!="Joined"){
                     //add user to club
                     getData(ls.get(position).getName().toString());
+
+                    buttonStates.put(position, true);
+                    // set the background color to gray
+                    holder.join.setBackgroundResource(R.drawable.gradient_color_gray);
                     holder.join.setText("Joined");
-                    holder.join.setBackgroundResource(R.color.gray);
+
                     Log.d("taggg",ls.get(position).getName().toString());
                     inc(ls.get(position).getName().toString());
 
@@ -199,14 +221,14 @@ img = itemView.findViewById(R.id.profile_image);
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult().isEmpty()) {
-
+                    if (!task.getResult().isEmpty()) {
+                        holder.join.setText("Joined");
+                        holder.join.setBackgroundResource(R.drawable.gradient_color_gray);
                         Log.d("TAG", "User ID not found in chatmembers collection");
 //                        Toast.makeText(c, "User not found", Toast.LENGTH_SHORT).show();
 
                     } else {
-                        holder.join.setText("Joined");
-                        holder.join.setBackgroundResource(R.color.gray);
+
                         Log.d("TAG", "User ID found in chatmembers collection");
 //                        Toast.makeText(c, "User found", Toast.LENGTH_SHORT).show();
 

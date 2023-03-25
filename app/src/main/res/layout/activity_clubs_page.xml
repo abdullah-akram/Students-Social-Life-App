@@ -95,14 +95,12 @@
         android:padding="10dp"
         android:weightSum="3">
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/club_1"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/round_corner"
             android:src="@drawable/club_1"
-            android:scaleType="fitXY"
 
 
             />
@@ -121,15 +119,13 @@
 
         <!--        />-->
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/club_2"
 
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/round_corner"
             android:src="@drawable/club_3"
-            android:scaleType="fitXY"
             android:layout_marginLeft="20dp"
 
 
@@ -145,17 +141,16 @@
         android:layout_marginRight="80dp"
         android:layout_marginLeft="80dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:padding="10dp"
         android:weightSum="3">
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/club_3"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/round_corner"
             android:src="@drawable/club_4"
-            android:scaleType="fitXY"
 
             />
 
@@ -173,15 +168,13 @@
 
         <!--            />-->
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/club_4"
 
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/round_corner"
             android:src="@drawable/club_6"
-            android:scaleType="fitXY"
             android:layout_marginLeft="20dp"
 
 
@@ -209,7 +202,7 @@
             android:layout_height="match_parent"
             android:textSize="10sp"
 
-            android:background="@drawable/round_corner"
+            android:background="@drawable/round_corner_4"
             android:drawableEnd="@drawable/ic_baseline_search_24"
             android:padding="10dp"
 
@@ -287,8 +280,9 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"            android:background="@drawable/ic_outline_notifications_24"
+            android:layout_marginBottom="10dp"            android:background="@drawable/ic_baseline_school_24"
             ></ImageButton>
+
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"

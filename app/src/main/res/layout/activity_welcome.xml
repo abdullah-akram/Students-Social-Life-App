@@ -57,7 +57,7 @@ android:layout_centerHorizontal="true"        />
         android:backgroundTint="@color/red"
         android:textColor="@color/white"
 
-        android:text="Continue"
+        android:text="Next"
         android:textStyle="bold"
         app:cornerRadius = "10dp"></Button>
 
