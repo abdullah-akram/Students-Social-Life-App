@@ -98,7 +98,7 @@ LLC"/>
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_baseline_group_24"
         android:text="10 Interested"
-        android:textSize="10sp"
+        android:textSize="8sp"
         android:gravity="center"
         />
 

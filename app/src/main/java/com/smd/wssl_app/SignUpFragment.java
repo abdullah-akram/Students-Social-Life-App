@@ -107,10 +107,10 @@ FirebaseAuth mauth;FirebaseFirestore db;
 //                buttonSendEmail(email_full);
 //                Toast.makeText(getContext(), "email sent", Toast.LENGTH_SHORT).show();
                 if(!email_full.isEmpty() && !password_full.isEmpty() && email_full.contains("@") && password_full.length()>6){
-                  //if(email_full.contains("@uowmail.edu.au") || email_full.contains("@uow.edu.au")){
+                  if(email_full.contains("uowmail.edu.au") || email_full.contains("uowdubai.ac.ae")){
                     sendOTPEmail("+923098991009",123456);
                 showCustomDialog();
-                  //}
+                  }
 //                  else{
 //                      Toast.makeText(getContext(), "Out of Domain, can't sign you up", Toast.LENGTH_LONG).show();
 //                  }

@@ -136,7 +136,7 @@ android:adjustViewBounds="true"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="All Clubs"
+            android:text="My Clubs"
             android:textColor="#BCBCBC"
             android:textSize="20sp"
 
@@ -292,15 +292,17 @@ android:id="@+id/grps"
             />
 
              <Button
-            android:layout_width="200dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
             android:text="Get Club Suggestions"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:id="@+id/ai"
+                 android:textColor="@color/blue"
                  android:layout_centerHorizontal="true"
                  android:layout_below="@+id/update"
-android:visibility="gone"
+android:visibility="visible"
+                 android:textSize="10sp"
                  />
 
         <EditText
@@ -319,7 +321,7 @@ android:visibility="gone"
             android:background="@drawable/round_corner"
             android:padding="10dp"
             android:hint="Insta username"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <EditText
             android:id="@+id/password"
@@ -336,7 +338,7 @@ android:visibility="gone"
             android:background="@drawable/round_corner"
             android:hint="password"
             android:padding="10dp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
        <TextView
            android:layout_width="match_parent"
@@ -353,7 +355,7 @@ android:visibility="gone"
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:weightSum="5"
         android:orientation="horizontal"

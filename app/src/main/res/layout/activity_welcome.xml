@@ -7,15 +7,28 @@
     android:background="@drawable/gradient_color"
     tools:context=".Welcome">
 
+    <TextView
+        android:id="@+id/getstarted"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="20dp"
+        android:text="Getting Started"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"        />
+
     <ImageView
         android:id="@+id/image"
+        android:layout_below="@id/getstarted"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="80dp"
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/logo"
+        android:background="@drawable/getstarted"
 android:layout_centerHorizontal="true"        />
 
     <com.smarteist.autoimageslider.SliderView

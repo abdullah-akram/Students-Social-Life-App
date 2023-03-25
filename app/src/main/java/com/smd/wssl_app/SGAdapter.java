@@ -104,6 +104,8 @@ public class SGAdapter extends RecyclerView.Adapter<SGAdapter.MyViewHolder> {
 
                     Intent i = new Intent(c,ChatPage.class);
                     i.putExtra("chat_name",ls.get(position).getName());
+                    i.putExtra("type","sg");
+
                     c.startActivity(i);}
             }
         });
