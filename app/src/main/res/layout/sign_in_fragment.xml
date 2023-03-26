@@ -45,7 +45,7 @@ android:background="@drawable/gradient_color"
         android:layout_marginRight="20dp"
         android:text="Forget Password ?"
         android:textColor="@color/white"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:textSize="20sp" />
 
     <Button

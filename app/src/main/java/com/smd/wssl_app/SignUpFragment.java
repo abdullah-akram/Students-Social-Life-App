@@ -244,6 +244,8 @@ FirebaseAuth mauth;FirebaseFirestore db;
 
 
                 registerUser(email_full,password_full);
+                Intent i = new Intent(getContext(),Welcome.class);
+                                        startActivity(i);
 
 
             }

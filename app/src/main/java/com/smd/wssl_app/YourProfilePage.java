@@ -700,7 +700,11 @@ suggests.add(splited[0].toLowerCase());
                          }
                          numCompleted++;
                          if (numCompleted == numIterations) {
+                             if(!dps.isEmpty())
                              getimages(dps);
+                             else
+                                 rv.setVisibility(View.INVISIBLE);
+
                          }
 
 
