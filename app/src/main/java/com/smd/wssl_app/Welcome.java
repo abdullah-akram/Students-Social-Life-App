@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class Welcome extends AppCompatActivity {
 
-    String url1 = "Unlock opportunities WSSL helps you unlock exclusive internship opportunities through our network. Find internships that best match your skillset and interests, so that you can take the next step in your career.\n";
-    String url2 = "Unlock opportunities WSSL helps you unlock exclusive internship opportunities through our network. Find internships that best match your skillset and interests, so that you can take the next step in your career.\n";
-    String url3 = "Unlock opportunities WSSL helps you unlock exclusive internship opportunities through our network. Find internships that best match your skillset and interests, so that you can take the next step in your career.\n";
+    int url1 = R.drawable.w1;
+    int url2 = R.drawable.w2;
+    int url3 = R.drawable.w3;
 
     Button button;
 
@@ -38,6 +38,7 @@ public class Welcome extends AppCompatActivity {
         SliderAdapter adapter = new SliderAdapter(this, sliderDataArrayList);
         sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
         sliderView.setSliderAdapter(adapter);
+
         sliderView.setScrollTimeInSec(3);
         sliderView.setAutoCycle(true);
         sliderView.startAutoCycle();

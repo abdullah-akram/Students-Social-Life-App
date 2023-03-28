@@ -12,6 +12,11 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -53,9 +58,43 @@ public class ChatMembersAdapter extends RecyclerView.Adapter<ChatMembersAdapter.
 if(!(ls.get(position).getImgurl().isEmpty()))
         Picasso.get().load(ls.get(position).getImgurl()).into(holder.img);
 else
-    holder.img.setImageResource(R.mipmap.ic_launcher);
+    holder.img.setImageResource(R.mipmap.ic_launcher_wssl);
 
-holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("users").document(ls.get(position).getUid());
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String email = document.getString("email");
+                        if (email != null && email.contains("uowdubai.ac.ae")) {
+                            holder.title.setText("Professor");
+                            // The email contains "@nu.com"
+                        } else {
+                            // The email does not contain "@nu.com"
+                        }
+                    } else {
+                        // The document does not exist
+                    }
+                } else {
+                    // An error occurred while retrieving the document
+                }
+            }
+        });
+
+
+
+
+
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
         Intent i = new Intent(c,MemberProfile.class);

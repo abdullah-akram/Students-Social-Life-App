@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,8 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterViewHolder viewHolder, final int position) {
 
+        Picasso.get().load(mSliderItems.get(position).getImgUrl()).into(viewHolder.imageViewBackground);
 
-        viewHolder.imageViewBackground.setText(mSliderItems.get(position).getImgUrl());
-        viewHolder.imageViewBackground.setTextColor(Color.WHITE);
 
     }
 
@@ -55,11 +55,11 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         // Adapter class for initializing
         // the views of our slider view.
         View itemView;
-        TextView imageViewBackground;
+        ImageView imageViewBackground;
 
         public SliderAdapterViewHolder(View itemView) {
             super(itemView);
-            imageViewBackground = itemView.findViewById(R.id.text);
+            imageViewBackground = itemView.findViewById(R.id.img);
             this.itemView = itemView;
         }
     }
