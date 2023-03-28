@@ -62,7 +62,7 @@ else
 
 
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();;
 
         DocumentReference docRef = db.collection("users").document(ls.get(position).getUid());
 
