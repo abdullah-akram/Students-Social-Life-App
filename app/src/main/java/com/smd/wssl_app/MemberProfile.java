@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.squareup.picasso.Picasso;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MemberProfile extends AppCompatActivity {
@@ -39,6 +41,8 @@ public class MemberProfile extends AppCompatActivity {
     ImageButton back;
     ImageView profilepic;
     String jjk;
+    int numCompleted = 0;
+
     Integer ii=0;
     ArrayList<String> liked;
     ArrayList<String> suggests;
@@ -56,6 +60,7 @@ public class MemberProfile extends AppCompatActivity {
     ImageButton home,football,groups,notifications,profile;
     FirebaseFirestore db;
     String memberuid;
+    List<String> dps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,7 @@ public class MemberProfile extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         memberuid= extras.getString("uid");
-
+        dps=new ArrayList<>(Arrays.asList());
         mauth = FirebaseAuth.getInstance();
 
         db = FirebaseFirestore.getInstance();
@@ -86,9 +91,9 @@ public class MemberProfile extends AppCompatActivity {
         rv.setAdapter(adapter);
         RecyclerView.LayoutManager lm=new LinearLayoutManager(MemberProfile.this,LinearLayoutManager.HORIZONTAL,false);
         rv.setLayoutManager(lm);
-        ls.add(new ImageViewModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/images%2Fimage%3A256102?alt=media&token=0e9cff61-998e-466f-a6a8-318be59e1bc3"));
+//        ls.add(new ImageViewModel("https://firebasestorage.googleapis.com/v0/b/w-app-46ce9.appspot.com/o/images%2Fimage%3A256102?alt=media&token=0e9cff61-998e-466f-a6a8-318be59e1bc3"));
         adapter.notifyDataSetChanged();
-        getimages();
+        checkclubs();
         getclubs();
         setdp();
 
@@ -159,7 +164,6 @@ public class MemberProfile extends AppCompatActivity {
 
     }
 
-
     private void getclubs(){
         CollectionReference groupsRef = db.collection("groups");
         ArrayList<String> groupids = new ArrayList<>();
@@ -177,11 +181,14 @@ public class MemberProfile extends AppCompatActivity {
                                 if (innerTask.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : innerTask.getResult()) {
                                         String groupId = groupDocument.getId();
+
 //                                        groupids.add(groupId);
                                         // Do something with the group ID
-                                        Log.d("abd","aaa"+groupId);
+                                        Log.d("abdabd","aaa"+groupId);
 //                                        groupids.add(groupId);
-                                        sgrv.setText(sgrv.getText()+ groupId+"\n");
+                                        if(!groupId.toLowerCase().contains("club"))
+                                            sgrv.setText(sgrv.getText()+ groupId+"\n");
+                                        sgrv.setPaintFlags(sgrv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
 
@@ -210,31 +217,6 @@ public class MemberProfile extends AppCompatActivity {
     }
 
 
-    private void getimages(){
-
-
-        CollectionReference collectionRef = db.collection("clubs");
-
-
-
-        collectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String fieldValue = document.getString("dp");
-                        // Do something with the field value
-                        ls.add(new ImageViewModel(fieldValue));
-                        adapter.notifyDataSetChanged();
-
-                    }
-                } else {
-                    // Handle the error
-                }
-            }
-        });
-
-    }
 
 
     private void setdp(){
@@ -265,5 +247,119 @@ public class MemberProfile extends AppCompatActivity {
                     }
                 });
     }
+
+
+    private void getimages(List<String> dpp){
+
+
+        CollectionReference collectionRef = db.collection("clubs");
+
+
+
+        collectionRef.whereIn("club_name", dps)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String fieldValue = document.getString("dp");
+                                // Do something with the field value
+                                ls.add(new ImageViewModel(fieldValue));
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            // Handle the error
+                        }
+                    }
+                });
+
+
+
+
+//        collectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                               if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        String fieldValue = document.getString("dp");
+//                        // Do something with the field value
+//                        ls.add(new ImageViewModel(fieldValue));
+//                        adapter.notifyDataSetChanged();
+//
+//                    }
+//                } else {
+//                    // Handle the error
+//                }
+//            }
+//        });
+
+    }
+
+
+
+
+
+    public void checkclubs(){
+
+// Replace "groups" with the name of your top-level collection
+        CollectionReference groupsRef = db.collection("groups");
+
+// Replace "your_uid_value" with the UID value you want to query for
+        String uidValue = memberuid;
+
+        groupsRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot querySnapshot) {
+                int numIterations = querySnapshot.size();
+
+                for (DocumentSnapshot groupDocumentSnapshot : querySnapshot) {
+                    String groupId = groupDocumentSnapshot.getId();
+
+                    // Query the chatmembers subcollection of the current group
+                    CollectionReference chatMembersRef = groupDocumentSnapshot.getReference().collection("chatmembers");
+                    Query query = chatMembersRef.whereEqualTo("uid", uidValue);
+
+                    query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot querySnapshot) {
+                            for (DocumentSnapshot chatMemberDocumentSnapshot : querySnapshot) {
+                                String chatMemberId = groupDocumentSnapshot.getId();
+                                // Use the group ID and chat member ID as needed
+                                if(chatMemberId.toLowerCase().contains("club") && !dps.contains(chatMemberId)) {
+                                    dps.add(chatMemberId);
+                                    Log.d("abdulll", "done " + chatMemberId + ": ");
+
+                                }
+                            }
+                            numCompleted++;
+                            if (numCompleted == numIterations) {
+                                if(!dps.isEmpty())
+                                    getimages(dps);
+                                else
+                                    rv.setVisibility(View.INVISIBLE);
+
+                            }
+
+
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("TAG", "Error querying for chatmembers in group " + groupId + ": " + e);
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("TAG", "Error querying for groups: " + e);
+            }
+        });
+
+    }
+
 
 }

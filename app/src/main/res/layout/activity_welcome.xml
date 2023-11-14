@@ -19,47 +19,50 @@
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"        />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_below="@id/getstarted"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/getstarted"
-android:layout_centerHorizontal="true"        />
+
 
     <com.smarteist.autoimageslider.SliderView
         android:id="@+id/slider"
         android:layout_width="match_parent"
 
-        android:layout_height="150dp"
-        android:layout_below="@+id/image"
+        android:layout_height="350dp"
+        android:layout_below="@+id/getstarted"
         android:layout_centerInParent="true"
         app:sliderAnimationDuration="600"
         app:sliderAutoCycleDirection="back_and_forth"
         app:sliderIndicatorAnimationDuration="600"
         app:sliderIndicatorEnabled="true"
-        app:sliderIndicatorGravity="center_horizontal|top"
+        app:sliderIndicatorGravity="center_horizontal|bottom"
         app:sliderIndicatorMargin="15dp"
         app:sliderIndicatorOrientation="horizontal"
         app:sliderIndicatorPadding="3dp"
         app:sliderIndicatorRadius="2dp"
+
         app:sliderIndicatorSelectedColor="@color/red"
 
         app:sliderIndicatorUnselectedColor="#DC4040"
         app:sliderScrollTimeInSec="1" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:textSize="15sp"
+        android:id="@+id/textt"
+        android:textColor="@color/white"
+        android:text="Explore your opportunities!\nWSSL helps you unlock exclusive internship opportunities through our network. Find people, that best match your skillset and interests, who can take you to the next step in your career."
+        android:layout_below="@id/slider"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        />
+
     <Button
         android:id="@+id/button"
-        android:layout_below="@+id/slider"
+        android:layout_below="@+id/textt"
         android:layout_width="200dp"
         android:layout_centerHorizontal="true"
         android:layout_height="70dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
 
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"

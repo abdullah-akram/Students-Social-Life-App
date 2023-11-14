@@ -5,17 +5,18 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/text"
+    <ImageView
+        android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:textAlignment="center"
         android:gravity="center"
         android:layout_margin="30dp"
         android:layout_centerHorizontal="true"
-        android:text="Testing">
+        android:scaleType="fitXY"
+      >
 
-    </TextView>
+    </ImageView>
 
 
 </RelativeLayout>
